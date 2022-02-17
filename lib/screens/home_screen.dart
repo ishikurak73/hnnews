@@ -18,42 +18,39 @@ class HomePage extends StatelessWidget {
       length: 3,
       child: SafeArea(
         child: NestedScrollView(
-          headerSliverBuilder:
-              (BuildContext context, bool innerBoxIsScrolled) => <Widget>[
-            SliverAppBar(
-              pinned: true,
-              leading: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () async {
-                  // var ids = await topStoriesController.fetchStories();
-                  // print("ids");
-                  // Get.snackbar("hi", "snackbar");
-                },
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  title: const Text('Hacker News'),
+                  floating: true,
+                  pinned: true,
+                  snap: false,
+                  forceElevated: innerBoxIsScrolled,
+                  bottom: TabBar(tabs: [
+                    TabView(title: topStoryType.toUpperCase()),
+                    TabView(title: newStoryType.toUpperCase()),
+                    TabView(title: bestStoryType.toUpperCase()),
+                  ]),
+                ),
               ),
-              title: const Text('Hacker News'),
-              floating: true,
-              backgroundColor: Colors.red[100],
-              forceElevated: innerBoxIsScrolled,
-              bottom: TabBar(tabs: [
-                TabView(title: topStoryType.toUpperCase()),
-                TabView(title: newStoryType.toUpperCase()),
-                TabView(title: bestStoryType.toUpperCase()),
-              ]),
-            ),
-          ],
+            ];
+          },
           body: TabBarView(
             children: <Widget>[
               Obx(() => StoriesList(
-                    key: Key(topStoryType),
+                    storyType: topStoryType,
                     stories: topStoriesController.topStories.value,
                     isLoading: topStoriesController.isLoading.value,
                   )),
               Obx(() => StoriesList(
-                  key: Key(newStoryType),
+                  storyType: newStoryType,
                   stories: topStoriesController.topStories.value,
                   isLoading: topStoriesController.isLoading.value)),
               Obx(() => StoriesList(
-                  key: Key(bestStoryType),
+                  storyType: bestStoryType,
                   stories: topStoriesController.topStories.value,
                   isLoading: topStoriesController.isLoading.value)),
             ],
