@@ -56,3 +56,12 @@ class StoryModel {
         "url": url,
       };
 }
+
+class StoriesModel {
+  StoriesModel({required this.stories});
+  List<int> stories;
+
+  factory StoriesModel.fromJson(List<dynamic> json) => StoriesModel(
+        stories: List<int>.from(json.map((x) => x)),
+      );
+}
