@@ -4,7 +4,8 @@ import 'package:jiffy/jiffy.dart';
 final dateFormat = DateFormat.yMd().add_Hms();
 
 DateTime toDateTime(int timestamp) {
-  return DateTime.fromMillisecondsSinceEpoch((timestamp ?? 0) * 1000);
+  return DateTime.fromMillisecondsSinceEpoch(
+      (timestamp.isNaN ? 0 : timestamp) * 1000);
 }
 
 String fromNow(int timestamp) {
