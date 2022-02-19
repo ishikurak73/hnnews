@@ -24,6 +24,7 @@ class StoriesController extends GetxController {
 
   @override
   void onInit() async {
+    await fetchStoriesIdsOnInit();
     await fetchStoriesInit();
     pagingController.addPageRequestListener((lastIndex) {
       fetchStoriesOnScroll(lastIndex);
@@ -31,10 +32,16 @@ class StoriesController extends GetxController {
     super.onInit();
   }
 
+  fetchStoriesIdsOnInit() async {
+    try {
+      storiesIds.value = await fetchStoryByURL(url);
+    } finally {
+      isLoading(true);
+    }
+  }
+
   fetchStoriesInit() async {
     try {
-      // URLService.topStories()
-      storiesIds.value = await fetchStoryByURL(url);
       var ids = getPageItemsFromList(storiesIds.value, 0, pageSize);
       var stories = await fetchStoryByIds(ids);
       pagingController.appendPage(stories, stories.length);
@@ -67,6 +74,7 @@ class StoriesController extends GetxController {
     isLoading.value = true;
     storiesIds.value = [];
     pagingController.refresh();
+    await fetchStoriesIdsOnInit();
     await fetchStoriesInit();
   }
 
@@ -87,4 +95,19 @@ class NewStoriesController extends StoriesController {
 
 class BestStoriesController extends StoriesController {
   BestStoriesController() : super(url: URLService.bestStories());
+}
+
+class LikesStoriesController extends StoriesController {
+  LikesStoriesController() : super(url: "none");
+
+  get box => null;
+
+  @override
+  fetchStoriesIdsOnInit() async {
+    try {
+      storiesIds.value = await box.read(likeStories);
+    } finally {
+      isLoading(true);
+    }
+  }
 }
