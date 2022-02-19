@@ -37,6 +37,7 @@ dependencies:
   webview_flutter: ^3.0.0
   http: ^0.13.4
   infinite_scroll_pagination: ^3.1.0
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -90,3 +91,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: IBMPlexSans
+      fonts:
+        - asset: fonts/IBMPlexSans-Light.ttf
+          weight: 300
+        - asset: fonts/IBMPlexSans-Bold.ttf
+          weight: 700
+        - asset: fonts/IBMPlexSans-SemiBold.ttf
+          weight: 600
+        - asset: fonts/IBMPlexSans-Regular.ttf
+          weight: 400
+        - asset: fonts/IBMPlexSans-Medium.ttf
+          weight: 500
+    - family: IBMPlexSerif
+      fonts:
+        - asset: fonts/IBMPlexSerif-Light.ttf
+          weight: 300
+      
