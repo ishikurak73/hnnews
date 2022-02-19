@@ -4,6 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hnnews/constants/constants.dart';
 import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/models/story_model.dart';
+import 'package:hnnews/utilities/datetime.dart';
+import 'package:hnnews/utilities/strings.dart';
 
 class StoryTile extends StatelessWidget {
   StoryTile({Key? key, required this.story}) : super(key: key);
@@ -14,13 +16,6 @@ class StoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(
-        story.title,
-      ),
-      onTap: () => {
-        Get.toNamed("webviewer",
-            arguments: RouteArgumentModel(url: story.url, title: story.title))
-      },
       leading: IconButton(
         icon: const Icon(Icons.favorite),
         onPressed: () {
@@ -33,6 +28,30 @@ class StoryTile extends StatelessWidget {
           //         RouteArgumentModel(storyId: story.id, title: story.title))
         },
       ),
+      title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          toHost(story.url ?? ''),
+          style: Theme.of(context).textTheme.caption,
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+          softWrap: false,
+        ),
+        Text(
+          story.title,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ]),
+      subtitle: Text(
+        '${fromNow(story.time)} \u{2022} ${story.score} points by ${story.by}',
+        style: Theme.of(context).textTheme.caption,
+        maxLines: 1,
+        overflow: TextOverflow.fade,
+        softWrap: false,
+      ),
+      onTap: () => {
+        Get.toNamed("webviewer",
+            arguments: RouteArgumentModel(url: story.url, title: story.title))
+      },
       trailing: IconButton(
         icon: const Icon(Icons.add),
         onPressed: () {
