@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hnnews/constants/constants.dart';
 import 'package:hnnews/views/stories_list.dart';
-import 'package:hnnews/controllers/topstories_controller.dart';
+import 'package:hnnews/controllers/stories_controller.dart';
 import 'package:hnnews/views/tab_view.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  final topStoriesController = Get.put(TopStoriesController());
-  // final double _minValue = 8.0;
-  // var _key = GlobalKey<SliverAnimatedListState>();
+class HomeScreen extends StatefulWidget {
+  @override
+  HomePage createState() => HomePage();
+}
 
+class HomePage extends State<HomeScreen> {
+  final topStoriesController = Get.put(TopStoriesController());
+  final newStoriesController = Get.put(NewStoriesController());
+  final bestStoriesController = Get.put(BestStoriesController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,18 +44,26 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
             children: <Widget>[
               Obx(() => StoriesList(
-                    storyType: topStoryType,
-                    stories: topStoriesController.topStories.value,
+                    onRefresh: () => Future.sync(() {
+                      topStoriesController.onRefresh();
+                    }),
+                    pageController: topStoriesController.pagingController,
                     isLoading: topStoriesController.isLoading.value,
                   )),
               Obx(() => StoriesList(
-                  storyType: newStoryType,
-                  stories: topStoriesController.topStories.value,
-                  isLoading: topStoriesController.isLoading.value)),
+                  onRefresh: () => Future.sync(() {
+                        print(99999888);
+                        newStoriesController.pagingController.refresh();
+                      }),
+                  pageController: newStoriesController.pagingController,
+                  isLoading: newStoriesController.isLoading.value)),
               Obx(() => StoriesList(
-                  storyType: bestStoryType,
-                  stories: topStoriesController.topStories.value,
-                  isLoading: topStoriesController.isLoading.value)),
+                  onRefresh: () => Future.sync(() {
+                        print(99999888);
+                        bestStoriesController.pagingController.refresh();
+                      }),
+                  pageController: bestStoriesController.pagingController,
+                  isLoading: bestStoriesController.isLoading.value)),
             ],
           ),
         ),

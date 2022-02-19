@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:hnnews/services/url_services.dart';
 import 'package:hnnews/models/story_model.dart';
 
-Future<List<int>> fetchStoryIds(String url) async {
+Future<List<int>> fetchStoryByURL(String url) async {
   final res = await http.get(
     Uri.parse(url),
   );
@@ -11,11 +11,11 @@ Future<List<int>> fetchStoryIds(String url) async {
     var data = StoriesModel.fromJson(jsonDecode(res.body));
     return data.stories;
   } else {
-    throw Exception('fetchStoryIds failed');
+    throw Exception('fetchStoryByURL failed');
   }
 }
 
-Future<List<StoryModel>> fetchOneStories(Iterable stories) async {
+Future<List<StoryModel>> fetchStoryByIds(Iterable stories) async {
   if (stories.isNotEmpty) {
     return Future.wait(stories.map((storyId) {
       return fetchStoryByID(storyId);

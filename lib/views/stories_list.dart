@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:hnnews/models/story_model.dart';
 import 'package:hnnews/views/story_tile.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class StoriesList extends StatelessWidget {
   StoriesList({
     Key? key,
-    required this.stories,
     required this.isLoading,
-    required this.storyType,
-  }) {}
+    required this.onRefresh,
+    required this.pageController,
+  });
 
-  List<StoryModel> stories;
   bool isLoading;
-  String storyType;
+  RefreshCallback onRefresh;
+  PagingController<int, StoryModel> pageController;
 
   @override
   Widget build(BuildContext context) {
     // isLoading
-    return ListView.builder(
-      key: PageStorageKey<String>(storyType),
-      itemCount: stories.length,
-      itemBuilder: (context, index) {
-        return StoryTile(story: stories[index]);
-      },
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: PagedListView<int, StoryModel>.separated(
+        pagingController: pageController,
+        builderDelegate: PagedChildBuilderDelegate<StoryModel>(
+          animateTransitions: true,
+          itemBuilder: (context, item, index) => StoryTile(story: item),
+        ),
+        separatorBuilder: (context, index) => const Divider(),
+      ),
     );
   }
 }
