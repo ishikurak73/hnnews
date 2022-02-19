@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => HomeScreen(),
       },
       onGenerateRoute: (settings) {
         RouteArgumentModel arguments = settings.arguments as RouteArgumentModel;
