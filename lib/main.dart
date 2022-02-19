@@ -5,6 +5,7 @@ import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/screens/comment_screen.dart';
 import 'package:hnnews/screens/webview_screen.dart';
 import 'package:hnnews/screens/home_screen.dart';
+import 'package:hnnews/theme/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,10 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Hacker News',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: CustomTheme.dark,
+      darkTheme: CustomTheme.dark,
       initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),
