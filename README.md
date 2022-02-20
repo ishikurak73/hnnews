@@ -2,6 +2,8 @@
 
 Flutter News App
 
+## Demo (Gif)
+
 ![Demo](hnapp_demo.gif)
 
 ## Features
