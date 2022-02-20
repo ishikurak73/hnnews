@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Hacker News',
       theme: CustomTheme.dark,
-      darkTheme: CustomTheme.dark,
+      darkTheme: CustomTheme.light,
       initialRoute: '/',
       routes: {
         '/': (context) => HomeScreen(),

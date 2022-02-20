@@ -21,6 +21,7 @@ class HomePage extends State<HomeScreen> {
   final likeStoriesController = Get.put(LikeStoriesController());
 
   static const toolbarHeight = 50.00;
+  bool isDark = Get.isDarkMode;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,16 @@ class HomePage extends State<HomeScreen> {
                                 arguments: RouteArgumentModel());
                           },
                         ),
+                      ),
+                      Switch(
+                        value: isDark,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isDark = value;
+                            Get.changeThemeMode(
+                                value ? ThemeMode.dark : ThemeMode.light);
+                          });
+                        },
                       ),
                     ],
                   ),
