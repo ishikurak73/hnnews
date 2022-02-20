@@ -99,8 +99,9 @@ class HomePage extends State<HomeScreen> {
                         onChanged: (bool value) {
                           setState(() {
                             isDark = value;
-                            Get.changeThemeMode(
-                                value ? ThemeMode.dark : ThemeMode.light);
+                            Get.changeThemeMode(Get.isDarkMode
+                                ? ThemeMode.dark
+                                : ThemeMode.light);
                           });
                         },
                       ),
