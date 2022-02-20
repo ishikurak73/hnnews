@@ -9,11 +9,13 @@ class StoriesList extends StatelessWidget {
     required this.isLoading,
     required this.onRefresh,
     required this.pageController,
-  });
+    required this.type,
+  }) : super(key: key);
 
   bool isLoading;
   RefreshCallback onRefresh;
   PagingController<int, StoryModel> pageController;
+  String type;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,8 @@ class StoriesList extends StatelessWidget {
       onRefresh: onRefresh,
       child: PagedListView<int, StoryModel>.separated(
         pagingController: pageController,
+        key: PageStorageKey<String>(type),
+        // padding: const EdgeInsets.only(bottom: 120),
         builderDelegate: PagedChildBuilderDelegate<StoryModel>(
           animateTransitions: true,
           itemBuilder: (context, item, index) => StoryTile(story: item),

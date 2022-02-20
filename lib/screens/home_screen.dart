@@ -14,60 +14,89 @@ class HomePage extends State<HomeScreen> {
   final topStoriesController = Get.put(TopStoriesController());
   final newStoriesController = Get.put(NewStoriesController());
   final bestStoriesController = Get.put(BestStoriesController());
+
+  static const toolbarHeight = 50.00;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: DefaultTabController(
-      length: 3,
-      child: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: SliverAppBar(
-                  title: const Text('Hacker News'),
-                  floating: true,
-                  pinned: true,
-                  snap: false,
-                  forceElevated: innerBoxIsScrolled,
-                  bottom: TabBar(tabs: [
-                    TabView(title: topStoryType.toUpperCase()),
-                    TabView(title: newStoryType.toUpperCase()),
-                    TabView(title: bestStoryType.toUpperCase()),
-                  ]),
+      body: DefaultTabController(
+        length: 3,
+        child: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverAppBar(
+                    toolbarHeight: toolbarHeight,
+                    forceElevated: innerBoxIsScrolled,
+                    automaticallyImplyLeading: true,
+                    title: Text(
+                      "Hacker News",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    // titleSpacing: 20,
+                    floating: true,
+                    snap: true,
+                    pinned: true,
+                    // backgroundColor: Colors.blueGrey,
+                    // expandedHeight: 120,
+                    bottom: TabBar(tabs: [
+                      TabView(title: topStoryType.toUpperCase()),
+                      TabView(title: newStoryType.toUpperCase()),
+                      TabView(title: bestStoryType.toUpperCase()),
+                    ]),
+                  ),
                 ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              Obx(() => StoriesList(
-                    onRefresh: () => Future.sync(() {
-                      topStoriesController.onRefresh();
-                    }),
-                    pageController: topStoriesController.pagingController,
-                    isLoading: topStoriesController.isLoading.value,
-                  )),
-              Obx(() => StoriesList(
-                  onRefresh: () => Future.sync(() {
-                        print(99999888);
-                        newStoriesController.pagingController.refresh();
+              ];
+            },
+            body: Container(
+              margin: const EdgeInsets.only(top: toolbarHeight),
+              child: TabBarView(children: <Widget>[
+                SafeArea(
+                  child: Obx(
+                    () => StoriesList(
+                      onRefresh: () => Future.sync(() {
+                        topStoriesController.onRefresh();
                       }),
-                  pageController: newStoriesController.pagingController,
-                  isLoading: newStoriesController.isLoading.value)),
-              Obx(() => StoriesList(
-                  onRefresh: () => Future.sync(() {
-                        print(99999888);
-                        bestStoriesController.pagingController.refresh();
+                      pageController: topStoriesController.pagingController,
+                      isLoading: topStoriesController.isLoading.value,
+                      type: topStoryType,
+                    ),
+                  ),
+                ),
+                SafeArea(
+                  child: Obx(
+                    () => StoriesList(
+                      onRefresh: () => Future.sync(() {
+                        newStoriesController.onRefresh();
                       }),
-                  pageController: bestStoriesController.pagingController,
-                  isLoading: bestStoriesController.isLoading.value)),
-            ],
+                      pageController: newStoriesController.pagingController,
+                      isLoading: newStoriesController.isLoading.value,
+                      type: newStoryType,
+                    ),
+                  ),
+                ),
+                SafeArea(
+                  child: Obx(
+                    () => StoriesList(
+                      onRefresh: () => Future.sync(() {
+                        bestStoriesController.onRefresh();
+                      }),
+                      pageController: bestStoriesController.pagingController,
+                      isLoading: bestStoriesController.isLoading.value,
+                      type: bestStoryType,
+                    ),
+                  ),
+                ),
+              ]),
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
