@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hnnews/constants/constants.dart';
+import 'package:hnnews/constants/design_constants.dart';
 import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/views/icons.dart';
 import 'package:hnnews/views/stories_list.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
-import 'package:hnnews/views/tab_view.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,9 +40,13 @@ class HomePage extends State<HomeScreen> {
                     toolbarHeight: toolbarHeight,
                     forceElevated: innerBoxIsScrolled,
                     automaticallyImplyLeading: true,
+                    centerTitle: true,
+
                     title: Text(
                       "Hacker News",
-                      style: Theme.of(context).textTheme.headline5,
+                      style: appHeader3Style(
+                        color: Theme.of(context).textTheme.headline1?.color,
+                      ),
                     ),
                     // titleSpacing: 20,
                     floating: true,
@@ -51,9 +55,30 @@ class HomePage extends State<HomeScreen> {
                     // backgroundColor: Colors.blueGrey,
                     // expandedHeight: 120,
                     bottom: TabBar(tabs: [
-                      TabView(title: topStoryType.toUpperCase()),
-                      TabView(title: newStoryType.toUpperCase()),
-                      TabView(title: bestStoryType.toUpperCase()),
+                      Tab(
+                        child: Text(
+                          topStoryType.toUpperCase(),
+                          style: header9Style(
+                            color: Theme.of(context).textTheme.subtitle2?.color,
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          newStoryType.toUpperCase(),
+                          style: header9Style(
+                            color: Theme.of(context).textTheme.subtitle2?.color,
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          bestStoryType.toUpperCase(),
+                          style: header9Style(
+                            color: Theme.of(context).textTheme.subtitle2?.color,
+                          ),
+                        ),
+                      ),
                     ]),
 
                     actions: <Widget>[

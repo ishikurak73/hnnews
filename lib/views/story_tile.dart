@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hnnews/constants/design_constants.dart';
 import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/models/story_model.dart';
@@ -17,25 +18,41 @@ class StoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          story.title,
-          style: Theme.of(context).textTheme.bodyText1,
+        Padding(
+          padding: const EdgeInsets.only(
+            top: space12,
+            bottom: space8,
+          ),
+          child: Text(
+            story.title,
+            // style: Theme.of(context).textTheme.bodyText1,
+            style: header6Style(
+                color: Theme.of(context).textTheme.headline6?.color),
+          ),
         ),
       ]),
       subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          toHost(story.url ?? ''),
-          style: Theme.of(context).textTheme.caption,
-          maxLines: 1,
-          overflow: TextOverflow.fade,
-          softWrap: false,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: space0),
+          child: Text(
+            toHost(story.url ?? ''),
+            style: captionTextStyle(
+                color: Theme.of(context).textTheme.caption?.color),
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+          ),
         ),
-        Text(
-          '${fromNow(story.time)} \u{2022} ${story.score} points by ${story.by}',
-          style: Theme.of(context).textTheme.caption,
-          maxLines: 1,
-          overflow: TextOverflow.fade,
-          softWrap: false,
+        Padding(
+          padding: const EdgeInsets.only(top: space8, bottom: space4),
+          child: Text(
+            '${fromNow(story.time)} \u{2022} ${story.score} points by ${story.by}',
+            style: captionTextStyle(
+                color: Theme.of(context).textTheme.caption?.color),
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+          ),
         ),
         Row(
           children: [
