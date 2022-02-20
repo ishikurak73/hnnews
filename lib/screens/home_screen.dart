@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hnnews/constants/constants.dart';
 import 'package:hnnews/controllers/like_controller.dart';
+import 'package:hnnews/models/arguments.dart';
+import 'package:hnnews/views/icons.dart';
 import 'package:hnnews/views/stories_list.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
 import 'package:hnnews/views/tab_view.dart';
@@ -15,7 +17,7 @@ class HomePage extends State<HomeScreen> {
   final topStoriesController = Get.put(TopStoriesController());
   final newStoriesController = Get.put(NewStoriesController());
   final bestStoriesController = Get.put(BestStoriesController());
-  final likeModel = Get.put(LikeController());
+  final likeController = Get.put(LikeController());
 
   static const toolbarHeight = 50.00;
 
@@ -51,6 +53,20 @@ class HomePage extends State<HomeScreen> {
                       TabView(title: newStoryType.toUpperCase()),
                       TabView(title: bestStoryType.toUpperCase()),
                     ]),
+
+                    actions: <Widget>[
+                      Obx(
+                        () => IconButton(
+                          icon: likeController.idss.isNotEmpty
+                              ? likeIcon
+                              : likedIcon,
+                          onPressed: () {
+                            Get.toNamed("likes",
+                                arguments: RouteArgumentModel());
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ];

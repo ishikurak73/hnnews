@@ -11,16 +11,16 @@ class StoryTile extends StatelessWidget {
   StoryTile({Key? key, required this.story}) : super(key: key);
 
   StoryModel story;
-  final likeModel = Get.find<LikeController>();
+  final likeController = Get.find<LikeController>();
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Obx(() => IconButton(
-            icon: likeModel.has(story.id) == true ? likeIcon : likedIcon,
+            icon: likeController.has(story.id) == true ? likeIcon : likedIcon,
             key: Key('${story.id}'),
             onPressed: () {
-              likeModel.toggle(story.id);
+              likeController.toggle(story.id);
               // Get.toNamed("like",
               //     arguments:
               //         RouteArgumentModel(storyId: story.id, title: story.title))
@@ -53,7 +53,7 @@ class StoryTile extends StatelessWidget {
       trailing: IconButton(
         icon: const Icon(Icons.add),
         onPressed: () {
-          print(likeModel.idss);
+          print(likeController.idss);
           Get.toNamed("comments",
               arguments:
                   RouteArgumentModel(storyId: story.id, title: story.title));

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/screens/comment_screen.dart';
+import 'package:hnnews/screens/like_screen.dart';
 import 'package:hnnews/screens/webview_screen.dart';
 import 'package:hnnews/screens/home_screen.dart';
 import 'package:hnnews/theme/theme.dart';
@@ -24,7 +25,6 @@ class MyApp extends StatelessWidget {
       },
       onGenerateRoute: (settings) {
         RouteArgumentModel arguments = settings.arguments as RouteArgumentModel;
-
         if (settings.name == "webviewer") {
           return MaterialPageRoute(
               builder: (BuildContext context) => WebViewer(
@@ -37,6 +37,9 @@ class MyApp extends StatelessWidget {
                     title: arguments.title as String,
                     storyId: arguments.storyId as int,
                   ));
+        } else if (settings.name == "likes") {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => LikeScreen());
         }
       },
     );
