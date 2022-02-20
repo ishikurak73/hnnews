@@ -1,5 +1,17 @@
 # Hacker News
 
+Flutter News App
+
+![Demo](hnapp_demo.gif)
+
+## Features
+
+- Theme support (light/dark)
+- Nexted Infinite Scroll for a better UX
+- Seperation of concerns ie UI, Services, Controller, Model
+- I/O operation
+- Design System
+
 ## Tutorial
 
 ### Structure
@@ -25,15 +37,15 @@ lib
 └── main.dart
 ```
 
-### Model
+#### Model
 
 Create a model using `https://app.quicktype.io/`
 
-### Service
+#### Service
 
 Create Services to fetch data and map with model
 
-### Controller
+#### Controller
 
 1. Created different controllers to manage the state of various types of data such as top, new, best
 
@@ -41,10 +53,23 @@ Create Services to fetch data and map with model
 
 3. Created like controller to manage the state of likes as well as read/write to disk
 
-### Theme
+#### Theme
 
 1. Created light and dark theme
 2. Created Text components while keeping system theme color
+
+### How load the data
+
+#### Challenge
+
+top, new, best api sends 500 items at a time; loading 500 stories for all 3 types means loading 1500 stories which will slow down initial loadtime
+
+#### Solutiosn
+
+1. fetch ids of each stories ie 3 api calls
+2. for each page, load first 20 stories
+3. as user scrolls, keep fetching preceeding 20 stories
+4. on refresh fresh everything and start with 1
 
 ## Development
 
