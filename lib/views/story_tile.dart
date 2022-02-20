@@ -16,17 +16,13 @@ class StoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Obx(() => IconButton(
-            icon: likeController.has(story.id) == true ? likeIcon : likedIcon,
-            key: Key('${story.id}'),
-            onPressed: () {
-              likeController.toggle(story.id);
-              // Get.toNamed("like",
-              //     arguments:
-              //         RouteArgumentModel(storyId: story.id, title: story.title))
-            },
-          )),
       title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          story.title,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ]),
+      subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           toHost(story.url ?? ''),
           style: Theme.of(context).textTheme.caption,
@@ -35,30 +31,48 @@ class StoryTile extends StatelessWidget {
           softWrap: false,
         ),
         Text(
-          story.title,
-          style: Theme.of(context).textTheme.bodyText1,
+          '${fromNow(story.time)} \u{2022} ${story.score} points by ${story.by}',
+          style: Theme.of(context).textTheme.caption,
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+          softWrap: false,
+        ),
+        Row(
+          children: [
+            Obx(
+              () => IconButton(
+                icon: likeController.has(story.id) == true
+                    ? smallLikeIcon
+                    : smallLikedIcon,
+                key: Key('${story.id}'),
+                onPressed: () {
+                  likeController.toggle(story.id);
+                },
+              ),
+            ),
+            TextButton.icon(
+              icon: smallCommentIcon,
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              label: Text(
+                story.descendants.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),
+              key: Key('${story.id}'),
+              onPressed: () {
+                Get.toNamed("comments",
+                    arguments: RouteArgumentModel(
+                        storyId: story.id, title: story.title));
+              },
+            ),
+          ],
         ),
       ]),
-      subtitle: Text(
-        '${fromNow(story.time)} \u{2022} ${story.score} points by ${story.by}',
-        style: Theme.of(context).textTheme.caption,
-        maxLines: 1,
-        overflow: TextOverflow.fade,
-        softWrap: false,
-      ),
       onTap: () => {
         Get.toNamed("webviewer",
             arguments: RouteArgumentModel(url: story.url, title: story.title))
       },
-      trailing: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          print(likeController.idss);
-          Get.toNamed("comments",
-              arguments:
-                  RouteArgumentModel(storyId: story.id, title: story.title));
-        },
-      ),
     );
   }
 }
