@@ -71,7 +71,6 @@ class StoriesController extends GetxController {
   }
 
   onRefresh() async {
-    print("onRefresh");
     isLoading.value = true;
     storiesIds.value = [];
     pagingController.refresh();
@@ -100,9 +99,7 @@ class BestStoriesController extends StoriesController {
 
 class LikeStoriesController extends StoriesController {
   LikeStoriesController() : super(url: "like");
-
-  final likeController = Get.put(LikeController());
-
+  final likeController = Get.find<LikeController>();
   @override
   fetchStoriesIdsOnInit() {
     try {
