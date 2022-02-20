@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:hnnews/constants/constants.dart';
 import 'package:hnnews/models/arguments.dart';
+import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/models/story_model.dart';
 import 'package:hnnews/utilities/datetime.dart';
 import 'package:hnnews/utilities/strings.dart';
+import 'package:hnnews/views/icons.dart';
 
 class StoryTile extends StatelessWidget {
   StoryTile({Key? key, required this.story}) : super(key: key);
 
   StoryModel story;
-  final box = GetStorage();
+  final likeModel = Get.find<LikeController>();
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: IconButton(
-        icon: const Icon(Icons.favorite),
-        onPressed: () {
-          var likedStories = box.read(likeStories) ?? [];
-          likedStories.add(story.id);
-          box.write(likeStories, likedStories);
-
-          // Get.toNamed("like",
-          //     arguments:
-          //         RouteArgumentModel(storyId: story.id, title: story.title))
-        },
-      ),
+      leading: Obx(() => IconButton(
+            icon: likeModel.has(story.id) == true ? likeIcon : likedIcon,
+            key: Key('${story.id}'),
+            onPressed: () {
+              likeModel.toggle(story.id);
+              // Get.toNamed("like",
+              //     arguments:
+              //         RouteArgumentModel(storyId: story.id, title: story.title))
+            },
+          )),
       title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           toHost(story.url ?? ''),
@@ -55,7 +53,7 @@ class StoryTile extends StatelessWidget {
       trailing: IconButton(
         icon: const Icon(Icons.add),
         onPressed: () {
-          print(box.read(likeStories));
+          print(likeModel.idss);
           Get.toNamed("comments",
               arguments:
                   RouteArgumentModel(storyId: story.id, title: story.title));

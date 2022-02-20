@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hnnews/constants/constants.dart';
+import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/views/stories_list.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
 import 'package:hnnews/views/tab_view.dart';
@@ -14,6 +15,7 @@ class HomePage extends State<HomeScreen> {
   final topStoriesController = Get.put(TopStoriesController());
   final newStoriesController = Get.put(NewStoriesController());
   final bestStoriesController = Get.put(BestStoriesController());
+  final likeModel = Get.put(LikeController());
 
   static const toolbarHeight = 50.00;
 
