@@ -69,6 +69,7 @@ class HomePage extends State<HomeScreen> {
                         ),
                       ),
                       Switch(
+                        activeColor: Theme.of(context).focusColor,
                         value: isDark,
                         onChanged: (bool value) {
                           setState(() {

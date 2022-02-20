@@ -53,11 +53,12 @@ class StoryTile extends StatelessWidget {
             TextButton.icon(
               icon: smallCommentIcon,
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                foregroundColor: MaterialStateProperty.all(
+                    Theme.of(context).iconTheme.color),
               ),
               label: Text(
                 story.descendants.toString(),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: IconTheme.of(context).color),
               ),
               key: Key('${story.id}'),
               onPressed: () {
