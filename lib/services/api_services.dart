@@ -16,13 +16,13 @@ Future<List<int>> fetchStoryByURL(String url) async {
 }
 
 Future<List<StoryModel>> fetchStoryByIds(Iterable stories) async {
-  if (stories.isNotEmpty) {
+  try {
     return Future.wait(stories.map((storyId) {
       return fetchStoryByID(storyId);
     }));
-  } else {
-    throw Exception('top stories fetch failed');
-  }
+  } catch (e) {
+    return [];
+  } finally {}
 }
 
 Future<StoryModel> fetchStoryByID(int id) async {

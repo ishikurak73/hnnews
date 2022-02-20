@@ -1,9 +1,10 @@
-import 'package:get/state_manager.dart';
 import 'package:hnnews/constants/constants.dart';
+import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/models/story_model.dart';
 import 'package:hnnews/services/api_services.dart';
 import 'package:hnnews/services/url_services.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:get/get.dart';
 
 List<dynamic> getPageItemsFromList(List list, int start, int length) {
   var end = start + length;
@@ -97,15 +98,15 @@ class BestStoriesController extends StoriesController {
   BestStoriesController() : super(url: URLService.bestStories());
 }
 
-class LikesStoriesController extends StoriesController {
-  LikesStoriesController() : super(url: "none");
+class LikeStoriesController extends StoriesController {
+  LikeStoriesController() : super(url: "like");
 
-  get box => null;
+  final likeController = Get.put(LikeController());
 
   @override
-  fetchStoriesIdsOnInit() async {
+  fetchStoriesIdsOnInit() {
     try {
-      storiesIds.value = await box.read(likeStories);
+      storiesIds.value = likeController.idss;
     } finally {
       isLoading(true);
     }
