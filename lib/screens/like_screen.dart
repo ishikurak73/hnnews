@@ -46,22 +46,14 @@ class LikePage extends State<LikeScreen> {
                   // backgroundColor: Colors.blueGrey,
                   // expandedHeight: 120,
                   leading: IconButton(
-                    icon: const Icon(Icons.chevron_left),
+                    icon: const Icon(Icons.chevron_left_sharp),
                     onPressed: () {
                       Get.back();
                       // Get.toNamed(Get.previousRoute);
                     },
                   ),
 
-                  actions: <Widget>[
-                    IconButton(
-                      icon:
-                          likeController.idss.isNotEmpty ? likeIcon : likedIcon,
-                      onPressed: () {
-                        // Get.toNamed("likes", arguments: RouteArgumentModel());
-                      },
-                    ),
-                  ],
+                  actions: <Widget>[],
                 ),
               ),
             ];
