@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
-import 'package:hnnews/views/icons.dart';
 import 'package:hnnews/views/stories_list.dart';
 
 class LikeScreen extends StatefulWidget {
@@ -11,12 +10,14 @@ class LikeScreen extends StatefulWidget {
 }
 
 class LikePage extends State<LikeScreen> {
+  final likeStoriesController = Get.put(LikeStoriesController());
   final likeController = Get.find<LikeController>();
-  final likeStoriesController = Get.find<LikeStoriesController>();
+
   static const toolbarHeight = 50.00;
 
   @override
   void initState() {
+    likeStoriesController.storiesIds = likeController.idss;
     likeStoriesController.onRefresh();
     super.initState();
   }

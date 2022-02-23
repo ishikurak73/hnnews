@@ -6,16 +6,8 @@ class LikeController extends GetxController {
   final box = GetStorage();
   final _ids = <int>[].obs;
 
-  @override
-  void onInit() {
-    getLikesFromStrorage();
-
-    super.onInit();
-  }
-
   Future<void> getLikesFromStrorage() async {
     _ids.value = box.read(likeStories) ?? [];
-    update();
   }
 
   bool has(int id) {
@@ -43,7 +35,7 @@ class LikeController extends GetxController {
     return has(id) ? remove(id) : add(id);
   }
 
-  List<int> get idss => _ids;
+  get idss => _ids;
 
   // @override
   // void dispose() {

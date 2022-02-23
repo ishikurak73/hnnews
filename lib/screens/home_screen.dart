@@ -18,7 +18,6 @@ class HomePage extends State<HomeScreen> {
   final topStoriesController = Get.put(TopStoriesController());
   final newStoriesController = Get.put(NewStoriesController());
   final bestStoriesController = Get.put(BestStoriesController());
-  final likeStoriesController = Get.put(LikeStoriesController());
 
   static const toolbarHeight = 50.00;
   bool isDark = Get.isDarkMode;

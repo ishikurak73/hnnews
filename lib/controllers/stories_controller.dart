@@ -1,5 +1,4 @@
 import 'package:hnnews/constants/constants.dart';
-import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/models/story_model.dart';
 import 'package:hnnews/services/api_services.dart';
 import 'package:hnnews/services/url_services.dart';
@@ -99,13 +98,19 @@ class BestStoriesController extends StoriesController {
 
 class LikeStoriesController extends StoriesController {
   LikeStoriesController() : super(url: "like");
-  final likeController = Get.find<LikeController>();
   @override
   fetchStoriesIdsOnInit() {
-    try {
-      storiesIds.value = likeController.idss;
-    } finally {
-      isLoading(true);
-    }
+    // try {
+    // } finally {
+    //   isLoading(true);
+    // }
+  }
+
+  @override
+  onRefresh() async {
+    isLoading.value = true;
+    // storiesIds.value = [];
+    pagingController.refresh(); // fetch new updates // override custom method
+    await fetchStoriesInit();
   }
 }
