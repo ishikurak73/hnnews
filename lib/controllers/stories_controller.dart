@@ -4,6 +4,7 @@ import 'package:hnnews/services/api_services.dart';
 import 'package:hnnews/services/url_services.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 List<dynamic> getPageItemsFromList(List list, int start, int length) {
   var end = start + length;
@@ -11,7 +12,7 @@ List<dynamic> getPageItemsFromList(List list, int start, int length) {
   return list.sublist(start, endPost);
 }
 
-class StoriesController extends GetxController {
+class StoriesController {
   String url;
 
   var isLoading = true.obs;
@@ -20,16 +21,14 @@ class StoriesController extends GetxController {
   StoriesController({required this.url}) : super();
 
   final PagingController<int, StoryModel> pagingController =
-      PagingController(firstPageKey: 0);
+  PagingController(firstPageKey: 0);
 
-  @override
   void onInit() async {
     await fetchStoriesIdsOnInit();
     await fetchStoriesInit();
     pagingController.addPageRequestListener((lastIndex) {
       fetchStoriesOnScroll(lastIndex);
     });
-    super.onInit();
   }
 
   fetchStoriesIdsOnInit() async {
@@ -77,40 +76,13 @@ class StoriesController extends GetxController {
     await fetchStoriesInit();
   }
 
-  @override
-  void dispose() {
-    pagingController.dispose();
-    super.dispose();
-  }
 }
 
-class TopStoriesController extends StoriesController {
-  TopStoriesController() : super(url: URLService.topStories());
-}
-
-class NewStoriesController extends StoriesController {
-  NewStoriesController() : super(url: URLService.newStories());
-}
-
-class BestStoriesController extends StoriesController {
-  BestStoriesController() : super(url: URLService.bestStories());
-}
-
-class LikeStoriesController extends StoriesController {
-  LikeStoriesController() : super(url: "like");
-  @override
-  fetchStoriesIdsOnInit() {
-    // try {
-    // } finally {
-    //   isLoading(true);
-    // }
-  }
-
-  @override
-  onRefresh() async {
-    isLoading.value = true;
-    // storiesIds.value = [];
-    pagingController.refresh(); // fetch new updates // override custom method
-    await fetchStoriesInit();
-  }
-}
+final topStoriesProvider = AutoDisposeProvider(
+        (ref) => StoriesController(url: URLService.topStories())..onInit());
+final newStoriesProvider = AutoDisposeProvider(
+        (ref) => StoriesController(url: URLService.newStories())..onInit());
+final bestStoriesProvider = AutoDisposeProvider(
+        (ref) => StoriesController(url: URLService.bestStories())..onInit());
+final likeStoriesProvider = AutoDisposeProvider(
+        (ref) => StoriesController(url: 'like')..onInit());

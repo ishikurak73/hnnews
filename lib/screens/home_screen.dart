@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hnnews/constants/constants.dart';
 import 'package:hnnews/constants/design_constants.dart';
 import 'package:hnnews/controllers/like_controller.dart';
@@ -7,23 +6,25 @@ import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/views/icons.dart';
 import 'package:hnnews/views/stories_list.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   @override
   HomePage createState() => HomePage();
 }
 
-class HomePage extends State<HomeScreen> {
-  final likeController = Get.put(LikeController());
-  final topStoriesController = Get.put(TopStoriesController());
-  final newStoriesController = Get.put(NewStoriesController());
-  final bestStoriesController = Get.put(BestStoriesController());
-
+class HomePage extends ConsumerState<HomeScreen> {
   static const toolbarHeight = 50.00;
-  bool isDark = Get.isDarkMode;
+  bool isDark = true;
 
   @override
   Widget build(BuildContext context) {
+
+    final likeController = ref.watch(likeProvider);
+    final topStoriesController = ref.watch(topStoriesProvider);
+    final newStoriesController = ref.watch(newStoriesProvider);
+    final bestStoriesController = ref.watch(bestStoriesProvider);
+
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -34,7 +35,7 @@ class HomePage extends State<HomeScreen> {
               return <Widget>[
                 SliverOverlapAbsorber(
                   handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: SliverAppBar(
                     toolbarHeight: toolbarHeight,
                     forceElevated: innerBoxIsScrolled,
@@ -79,18 +80,15 @@ class HomePage extends State<HomeScreen> {
                         ),
                       ),
                     ]),
-
                     actions: <Widget>[
-                      Obx(
-                        () => IconButton(
-                          icon: likeController.idss.isNotEmpty
-                              ? likeIcon
-                              : likedIcon,
-                          onPressed: () {
-                            Get.toNamed("likes",
-                                arguments: RouteArgumentModel());
-                          },
-                        ),
+                      IconButton(
+                        icon: likeController.idss.isNotEmpty
+                            ? likeIcon
+                            : likedIcon,
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'likes',
+                              arguments: RouteArgumentModel());
+                        },
                       ),
                       Switch(
                         activeColor: Theme.of(context).focusColor,
@@ -98,9 +96,6 @@ class HomePage extends State<HomeScreen> {
                         onChanged: (bool value) {
                           setState(() {
                             isDark = value;
-                            Get.changeThemeMode(Get.isDarkMode
-                                ? ThemeMode.dark
-                                : ThemeMode.light);
                           });
                         },
                       ),
@@ -113,39 +108,36 @@ class HomePage extends State<HomeScreen> {
               margin: const EdgeInsets.only(top: toolbarHeight),
               child: TabBarView(children: <Widget>[
                 SafeArea(
-                  child: Obx(
-                    () => StoriesList(
-                      onRefresh: () => Future.sync(() {
-                        topStoriesController.onRefresh();
-                      }),
-                      pageController: topStoriesController.pagingController,
-                      isLoading: topStoriesController.isLoading.value,
-                      type: topStoryType,
-                    ),
+                  child:
+                  StoriesList(
+                    onRefresh: () => Future.sync(() {
+                      topStoriesController.onRefresh();
+                    }),
+                    pageController: topStoriesController.pagingController,
+                    isLoading: topStoriesController.isLoading.value,
+                    type: topStoryType,
                   ),
                 ),
                 SafeArea(
-                  child: Obx(
-                    () => StoriesList(
-                      onRefresh: () => Future.sync(() {
-                        newStoriesController.onRefresh();
-                      }),
-                      pageController: newStoriesController.pagingController,
-                      isLoading: newStoriesController.isLoading.value,
-                      type: newStoryType,
-                    ),
+                  child:
+                  StoriesList(
+                    onRefresh: () => Future.sync(() {
+                      newStoriesController.onRefresh();
+                    }),
+                    pageController: newStoriesController.pagingController,
+                    isLoading: newStoriesController.isLoading.value,
+                    type: newStoryType,
                   ),
                 ),
                 SafeArea(
-                  child: Obx(
-                    () => StoriesList(
-                      onRefresh: () => Future.sync(() {
-                        bestStoriesController.onRefresh();
-                      }),
-                      pageController: bestStoriesController.pagingController,
-                      isLoading: bestStoriesController.isLoading.value,
-                      type: bestStoryType,
-                    ),
+                  child:
+                  StoriesList(
+                    onRefresh: () => Future.sync(() {
+                      bestStoriesController.onRefresh();
+                    }),
+                    pageController: bestStoriesController.pagingController,
+                    isLoading: bestStoriesController.isLoading.value,
+                    type: bestStoryType,
                   ),
                 ),
               ]),

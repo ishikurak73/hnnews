@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hnnews/constants/design_constants.dart';
 import 'package:hnnews/models/arguments.dart';
 import 'package:hnnews/controllers/like_controller.dart';
@@ -8,14 +8,16 @@ import 'package:hnnews/utilities/datetime.dart';
 import 'package:hnnews/utilities/strings.dart';
 import 'package:hnnews/views/icons.dart';
 
-class StoryTile extends StatelessWidget {
+class StoryTile extends ConsumerWidget {
   StoryTile({Key? key, required this.story}) : super(key: key);
 
   StoryModel story;
-  final likeController = Get.find<LikeController>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final likeController = ref.watch(likeProvider);
+
     return ListTile(
       title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
@@ -56,16 +58,14 @@ class StoryTile extends StatelessWidget {
         ),
         Row(
           children: [
-            Obx(
-              () => IconButton(
-                icon: likeController.has(story.id) == true
-                    ? smallLikeIcon
-                    : smallLikedIcon,
-                key: Key('${story.id}'),
-                onPressed: () {
-                  likeController.toggle(story.id);
-                },
-              ),
+            IconButton(
+              icon: likeController.has(story.id) == true
+                  ? smallLikeIcon
+                  : smallLikedIcon,
+              //key: Key('${story.id}'),
+              onPressed: () {
+                likeController.toggle(story.id);
+              },
             ),
             TextButton.icon(
               icon: smallCommentIcon,
@@ -79,17 +79,17 @@ class StoryTile extends StatelessWidget {
               ),
               key: Key('${story.id}'),
               onPressed: () {
-                Get.toNamed("comments",
-                    arguments: RouteArgumentModel(
-                        storyId: story.id, title: story.title));
+                // Get.toNamed("comments",
+                //     arguments: RouteArgumentModel(
+                //         storyId: story.id, title: story.title));
               },
             ),
           ],
         ),
       ]),
       onTap: () => {
-        Get.toNamed("webviewer",
-            arguments: RouteArgumentModel(url: story.url, title: story.title))
+        // Get.toNamed("webviewer",
+        //     arguments: RouteArgumentModel(url: story.url, title: story.title))
       },
     );
   }

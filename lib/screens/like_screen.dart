@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+//import 'package:get/get.dart';
 import 'package:hnnews/controllers/like_controller.dart';
 import 'package:hnnews/controllers/stories_controller.dart';
 import 'package:hnnews/views/stories_list.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LikeScreen extends StatefulWidget {
+class LikeScreen extends ConsumerStatefulWidget {
   @override
   LikePage createState() => LikePage();
 }
 
-class LikePage extends State<LikeScreen> {
-  final likeStoriesController = Get.put(LikeStoriesController());
-  final likeController = Get.find<LikeController>();
-
+class LikePage extends ConsumerState<LikeScreen> {
   static const toolbarHeight = 50.00;
 
   @override
   void initState() {
-    likeStoriesController.storiesIds = likeController.idss;
-    likeStoriesController.onRefresh();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final likeStoriesController = ref.watch(likeStoriesProvider);
+    final likeController = ref.watch(likeProvider);
+
+    likeStoriesController.storiesIds = likeController.idss;
+    likeStoriesController.onRefresh();
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
@@ -31,7 +32,7 @@ class LikePage extends State<LikeScreen> {
             return <Widget>[
               SliverOverlapAbsorber(
                 handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   toolbarHeight: toolbarHeight,
                   forceElevated: innerBoxIsScrolled,
@@ -49,8 +50,7 @@ class LikePage extends State<LikeScreen> {
                   leading: IconButton(
                     icon: const Icon(Icons.chevron_left_sharp),
                     onPressed: () {
-                      Get.back();
-                      // Get.toNamed(Get.previousRoute);
+                      Navigator.pop(context);
                     },
                   ),
 
@@ -61,15 +61,14 @@ class LikePage extends State<LikeScreen> {
           },
           body: Container(
             margin: const EdgeInsets.only(top: toolbarHeight),
-            child: Obx(
-              () => StoriesList(
-                onRefresh: () => Future.sync(() {
-                  likeStoriesController.onRefresh();
-                }),
-                pageController: likeStoriesController.pagingController,
-                isLoading: likeStoriesController.isLoading.value,
-                type: "like",
-              ),
+            child:
+            StoriesList(
+              onRefresh: () => Future.sync(() {
+                likeStoriesController.onRefresh();
+              }),
+              pageController: likeStoriesController.pagingController,
+              isLoading: likeStoriesController.isLoading.value,
+              type: "like",
             ),
           ),
         ),

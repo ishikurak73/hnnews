@@ -1,8 +1,9 @@
 import 'package:hnnews/constants/constants.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/state_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LikeController extends GetxController {
+class LikeController {
   final box = GetStorage();
   final _ids = <int>[].obs;
 
@@ -37,11 +38,14 @@ class LikeController extends GetxController {
 
   get idss => _ids;
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   box.write(likeStories, ids);
+// @override
+// void dispose() {
+//   // TODO: implement dispose
+//   box.write(likeStories, ids);
 
-  //   super.dispose();
-  // }
+//   super.dispose();
+// }
 }
+
+final likeProvider = AutoDisposeProvider(
+        (ref) => LikeController());
